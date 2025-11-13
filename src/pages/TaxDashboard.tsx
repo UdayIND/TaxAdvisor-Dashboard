@@ -1541,6 +1541,80 @@ const TaxDashboard = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Tax Drag Calculation Modal */}
+      <Dialog open={taxDragModalOpen} onOpenChange={setTaxDragModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>How riAI Calculates Tax Drag</DialogTitle>
+            <DialogDescription>
+              Understanding the tax drag calculation methodology
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="prose prose-sm max-w-none">
+              <h4 className="text-sm font-semibold mb-2">Tax Drag Formula</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Tax drag is calculated as the annual percentage reduction in after-tax returns compared to a tax-free investment scenario.
+              </p>
+              <div className="bg-muted/50 p-4 rounded-lg mb-4">
+                <code className="text-xs">
+                  Tax Drag = (Pre-tax Return - After-tax Return) / Pre-tax Return × 100%
+                </code>
+              </div>
+              <h4 className="text-sm font-semibold mb-2">Components</h4>
+              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                <li>Dividend income tax (qualified vs. ordinary rates)</li>
+                <li>Interest income taxation</li>
+                <li>Capital gains realization timing</li>
+                <li>Account type tax treatment (taxable, IRA, Roth, 401(k))</li>
+                <li>State and local tax considerations</li>
+              </ul>
+              <h4 className="text-sm font-semibold mb-2 mt-4">Optimization Strategy</h4>
+              <p className="text-sm text-muted-foreground">
+                riAI analyzes each asset's tax characteristics and recommends optimal placement across account types to minimize annual tax drag while maintaining your target asset allocation.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Row Detail Drawer */}
+      <Sheet open={rowDetailOpen} onOpenChange={setRowDetailOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>{selectedRow || "Asset Details"}</SheetTitle>
+            <SheetDescription>
+              Holdings and recommendations for this asset type
+            </SheetDescription>
+          </SheetHeader>
+          <div className="space-y-4 mt-6">
+            <div>
+              <h4 className="text-sm font-semibold mb-3">Underlying Holdings</h4>
+              <div className="space-y-2">
+                {holdingsData.map((holding, idx) => (
+                  <div key={idx} className="p-3 rounded-lg border border-grayNeutral">
+                    <p className="text-sm font-medium">{holding.name}</p>
+                    <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                      <span>{holding.shares.toLocaleString()} shares</span>
+                      <span className="font-semibold text-foreground">${holding.value.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Account: {holding.account}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold mb-3">Recommendations</h4>
+              <div className="text-sm text-muted-foreground space-y-2">
+                <p>• Consider relocating high-yield positions to tax-deferred accounts</p>
+                <p>• Monitor dividend distributions and tax implications</p>
+                <p>• Review asset location annually for optimization opportunities</p>
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
       {/* Opportunity Detail Drawer */}
       <Sheet open={opportunityDrawerOpen} onOpenChange={setOpportunityDrawerOpen}>
         <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
