@@ -501,7 +501,7 @@ const TaxDashboard = () => {
               <Card className="p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-navy">Top Tax Opportunities</h3>
-                </div>
+            </div>
 
                 {/* Filter Chips */}
                 <div className="flex items-center gap-2 mb-4 flex-wrap">
@@ -521,7 +521,7 @@ const TaxDashboard = () => {
                       {category}
                     </Button>
                   ))}
-                </div>
+          </div>
 
                 {/* Opportunities List */}
                 <div className="space-y-2">
@@ -578,17 +578,17 @@ const TaxDashboard = () => {
                 <div key={idx} className="space-y-1">
                   <div className="flex items-center gap-1">
                     <span className="text-xs text-muted-foreground">{stat.label}</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
                           <Info className="h-3 w-3 text-muted-foreground cursor-help" />
-                        </TooltipTrigger>
+                  </TooltipTrigger>
                         <TooltipContent>
                           <p className="text-xs">{stat.tooltip}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
                   <div className="text-lg font-bold text-navy">{stat.value}</div>
                 </div>
               ))}
@@ -814,8 +814,8 @@ const TaxDashboard = () => {
                         className="w-full"
                       />
                     </div>
-                  </div>
-                  <div>
+                </div>
+                <div>
                     <Label className="text-sm font-medium mb-2 block">Retirement Age</Label>
                     <div className="space-y-2">
                       <Slider
@@ -832,8 +832,8 @@ const TaxDashboard = () => {
                         onChange={(e) => setRetirementAge(Number(e.target.value))}
                         className="w-full"
                       />
-                    </div>
                 </div>
+              </div>
                 <div>
                     <Label className="text-sm font-medium mb-2 block">Life Expectancy</Label>
                     <Select value={lifeExpectancy} onValueChange={setLifeExpectancy}>
@@ -862,8 +862,8 @@ const TaxDashboard = () => {
                       className="w-full"
                       placeholder="$0"
                     />
-                  </div>
-                  <div>
+                </div>
+                <div>
                     <Label className="text-sm font-medium mb-2 block">Traditional IRA Balance</Label>
                     <Input
                       type="number"
@@ -872,7 +872,7 @@ const TaxDashboard = () => {
                       className="w-full"
                       placeholder="$0"
                     />
-                  </div>
+                </div>
                   <div>
                     <Label className="text-sm font-medium mb-2 block">Roth IRA Balance</Label>
                     <Input
@@ -882,7 +882,7 @@ const TaxDashboard = () => {
                       className="w-full"
                       placeholder="$0"
                     />
-                  </div>
+              </div>
                   <div>
                     <Label className="text-sm font-medium mb-2 block">401(k) Balance (optional)</Label>
                     <Input
@@ -892,7 +892,7 @@ const TaxDashboard = () => {
                       className="w-full"
                       placeholder="$0"
                     />
-                  </div>
+            </div>
                 </div>
               </Card>
 
@@ -912,7 +912,7 @@ const TaxDashboard = () => {
                         <SelectItem value="maximize-roth">Maximize Roth legacy</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+              </div>
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Checkbox
@@ -1162,11 +1162,8 @@ const TaxDashboard = () => {
                   />
                 </ComposedChart>
               </ResponsiveContainer>
-            </div>
-
-                </ResponsiveContainer>
                 </div>
-              </Card>
+            </Card>
 
               {/* Key Years Table */}
               <Card className="p-6 shadow-sm">
@@ -1221,13 +1218,13 @@ const TaxDashboard = () => {
                     </tbody>
                   </table>
                 </div>
-              </Card>
+          </Card>
 
               {/* Strategy Summary */}
               <Card className="p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-navy mb-4">Strategy Summary</h3>
                 <div className="space-y-4">
-                  <div>
+              <div>
                     <p className="text-sm text-muted-foreground mb-2">Strategy Explanation:</p>
                     <ul className="text-sm space-y-1 list-disc list-inside text-foreground">
                       <li>Convert ~$25k/yr to Roth from ages 63–66 to fill 22% bracket and avoid higher future RMDs</li>
@@ -1235,17 +1232,17 @@ const TaxDashboard = () => {
                       <li>Delay Social Security until age 70 to maximize benefits</li>
                       <li>Harvest capital gains in low-income years</li>
                     </ul>
-                  </div>
+                    </div>
                   <div className="grid grid-cols-3 gap-4 pt-4 border-t">
                     <div>
                       <p className="text-xs text-muted-foreground mb-1">Baseline lifetime tax</p>
                       <p className="text-lg font-bold text-navy">$1.32M</p>
-                    </div>
+                  </div>
                     <div>
                       <p className="text-xs text-muted-foreground mb-1">Strategy lifetime tax</p>
                       <p className="text-lg font-bold text-green-700">$1.18M</p>
-                    </div>
-                    <div>
+              </div>
+              <div>
                       <p className="text-xs text-muted-foreground mb-1">Estimated reduction</p>
                       <p className="text-lg font-bold text-gold">$140k</p>
                       <p className="text-xs text-muted-foreground">(present value)</p>
@@ -1253,7 +1250,7 @@ const TaxDashboard = () => {
                   </div>
                 </div>
               </Card>
-            </div>
+              </div>
           </div>
         </TabsContent>
 

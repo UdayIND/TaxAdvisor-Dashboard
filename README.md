@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# Tax Advisor Dashboard
 
-## Project info
+A comprehensive tax optimization dashboard for financial advisors, built with React, TypeScript, and Vite.
 
-**URL**: https://lovable.dev/projects/ea50b31a-36f1-4799-a4a4-5a3f356a018e
+## Features
 
-## How can I edit this code?
+- **Tax Opportunities Dashboard** with 4 comprehensive tabs:
+  - Tax Efficiency Overview
+  - Asset Location Optimization
+  - Withdrawal Planner
+  - Value Demonstration
+- Client management and scenario planning
+- Interactive charts and visualizations
+- Real-time tax calculations and projections
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **UI Components**: shadcn-ui (Radix UI primitives)
+- **Styling**: Tailwind CSS
+- **Charts**: Recharts
+- **Routing**: React Router DOM
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ea50b31a-36f1-4799-a4a4-5a3f356a018e) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js 18+ and npm
+- Git
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Clone the repository
+git clone https://github.com/UdayIND/TaxAdvisor-Dashboard.git
 
-Follow these steps:
+# Navigate to project directory
+cd TaxAdvisor-Dashboard
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Building for Production
 
-**Use GitHub Codespaces**
+```bash
+# Build the project
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Preview the production build
+npm run preview
+```
 
-## What technologies are used for this project?
+## Deployment to Vercel
 
-This project is built with:
+This project is configured for easy deployment to Vercel:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. **Via Vercel Dashboard**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Import your GitHub repository: `UdayIND/TaxAdvisor-Dashboard`
+   - Vercel will automatically detect the Vite configuration
+   - Click "Deploy"
 
-## How can I deploy this project?
+2. **Via Vercel CLI**:
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
 
-Simply open [Lovable](https://lovable.dev/projects/ea50b31a-36f1-4799-a4a4-5a3f356a018e) and click on Share -> Publish.
+   # Deploy
+   vercel
+   ```
 
-## Can I connect a custom domain to my Lovable project?
+The `vercel.json` file is already configured with:
+- Build command: `npm run build`
+- Output directory: `dist`
+- Framework: `vite`
+- SPA routing rewrites
 
-Yes, you can!
+## Project Structure
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```
+├── src/
+│   ├── components/        # Reusable UI components
+│   │   ├── dashboard/     # Dashboard-specific components
+│   │   ├── layout/        # Layout components (Sidebar, TopBar)
+│   │   └── ui/            # shadcn-ui components
+│   ├── pages/             # Page components
+│   │   ├── Dashboard.tsx  # Main dashboard
+│   │   └── TaxDashboard.tsx  # Tax Opportunities Dashboard
+│   ├── hooks/             # Custom React hooks
+│   └── lib/               # Utility functions
+├── public/                # Static assets
+└── vercel.json           # Vercel deployment configuration
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Development
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## License
+
+MIT
