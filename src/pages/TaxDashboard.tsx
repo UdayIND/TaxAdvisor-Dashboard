@@ -242,6 +242,14 @@ const TaxDashboard = () => {
   const [includeSocialSecurity, setIncludeSocialSecurity] = useState(true);
   const [includeRMDRules, setIncludeRMDRules] = useState(true);
   const [showIRMAA, setShowIRMAA] = useState(false);
+  
+  // Tab 4: Implementation Checklist state
+  const [checklistItems, setChecklistItems] = useState<Record<number, { included: boolean; status: string }>>(
+    opportunities.reduce((acc, opp) => {
+      acc[opp.id] = { included: true, status: "planned" };
+      return acc;
+    }, {} as Record<number, { included: boolean; status: string }>)
+  );
 
   const selectedClient = clients.find((c) => c.id.toString() === selectedClientId);
 
@@ -1254,35 +1262,36 @@ const TaxDashboard = () => {
           </div>
         </TabsContent>
 
-        {/* Tab 4: Value Demonstration - Keep existing for now */}
+        {/* Tab 4: Value Demonstration */}
         <TabsContent value="impact" className="space-y-6">
-          <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-6">Tax Optimization Impact Visualization</h3>
+          {/* Row 1: Impact Chart */}
+          <Card className="p-6 shadow-sm">
+            <h3 className="text-xl font-semibold text-navy mb-6">Tax Optimization Impact Visualization</h3>
             
             {/* Before vs After Area Chart */}
-            <div className="h-96 w-full">
+            <div className="h-[500px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={[
-                    { year: 2024, before: 2.0, after: 2.0 },
-                    { year: 2026, before: 2.1, after: 2.15 },
-                    { year: 2028, before: 2.2, after: 2.35 },
-                    { year: 2030, before: 2.3, after: 2.5 },
-                    { year: 2032, before: 2.4, after: 2.65 },
-                    { year: 2034, before: 2.5, after: 2.8 },
-                    { year: 2036, before: 2.6, after: 2.95 },
-                    { year: 2038, before: 2.7, after: 3.1 },
-                    { year: 2040, before: 2.75, after: 3.2 },
-                    { year: 2042, before: 2.78, after: 3.25 },
-                    { year: 2044, before: 2.79, after: 3.27 },
-                    { year: 2045, before: 2.8, after: 3.28 },
+                    { year: 2024, before: 2.0, after: 2.0, taxDiff: 0 },
+                    { year: 2026, before: 2.1, after: 2.15, taxDiff: 2.5 },
+                    { year: 2028, before: 2.2, after: 2.35, taxDiff: 5.2 },
+                    { year: 2030, before: 2.3, after: 2.5, taxDiff: 8.1 },
+                    { year: 2032, before: 2.4, after: 2.65, taxDiff: 11.3 },
+                    { year: 2034, before: 2.5, after: 2.8, taxDiff: 14.8 },
+                    { year: 2036, before: 2.6, after: 2.95, taxDiff: 18.5 },
+                    { year: 2038, before: 2.7, after: 3.1, taxDiff: 22.4 },
+                    { year: 2040, before: 2.75, after: 3.2, taxDiff: 26.5 },
+                    { year: 2042, before: 2.78, after: 3.25, taxDiff: 30.8 },
+                    { year: 2044, before: 2.79, after: 3.27, taxDiff: 35.2 },
+                    { year: 2045, before: 2.8, after: 3.28, taxDiff: 39.8 },
                   ]}
-                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
                 >
                   <defs>
                     <linearGradient id="colorBefore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#1e3a5f" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#1e3a5f" stopOpacity={0.05} />
+                      <stop offset="5%" stopColor="#6b7280" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#6b7280" stopOpacity={0.05} />
                     </linearGradient>
                     <linearGradient id="colorAfter" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#d4af37" stopOpacity={0.4} />
@@ -1301,7 +1310,12 @@ const TaxDashboard = () => {
                     tickFormatter={(value) => `$${value.toFixed(1)}M`}
                   />
                   <RechartsTooltip
-                    formatter={(value: number) => [`$${value.toFixed(2)}M`, '']}
+                    formatter={(value: number, name: string, props: any) => {
+                      if (name === 'before') return [`$${value.toFixed(2)}M`, 'Before Optimization'];
+                      if (name === 'after') return [`$${value.toFixed(2)}M`, 'After Optimization'];
+                      if (name === 'taxDiff') return [`$${value.toFixed(1)}k`, 'Annual Tax Difference'];
+                      return [value, name];
+                    }}
                     labelFormatter={(label) => `Year ${label}`}
                     contentStyle={{
                       backgroundColor: 'white',
@@ -1320,7 +1334,7 @@ const TaxDashboard = () => {
                   <Area
                     type="monotone"
                     dataKey="before"
-                    stroke="#1e3a5f"
+                    stroke="#6b7280"
                     strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#colorBefore)"
@@ -1337,22 +1351,173 @@ const TaxDashboard = () => {
                   />
                 </AreaChart>
               </ResponsiveContainer>
-            </div>
+                    </div>
 
-            {/* Delta */}
-            <div className="mt-8 text-center p-6 bg-gradient-to-r from-gold/10 to-gold/5 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-2">Total Tax Savings by 2045</p>
-              <p className="text-4xl font-bold text-gold">+$480,000</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                riAI Tax Alpha: <span className="font-semibold">+0.9% annually</span>
+            {/* Summary Line */}
+            <div className="mt-6 text-center p-4 bg-muted/50 rounded-lg">
+              <p className="text-sm text-foreground">
+                Estimated total tax savings by 2045: <span className="font-bold text-gold">$248,000</span> · 
+                Increase in after-tax wealth: <span className="font-bold text-green-700">$310,000</span>
               </p>
-            </div>
+                  </div>
+          </Card>
 
-            <div className="mt-6 text-center">
-              <Button className="bg-gold hover:bg-gold-dark text-navy">
-                <Download className="h-4 w-4 mr-2" />
-                Export Branded Report (PDF)
-              </Button>
+          {/* Row 2: KPI Tiles */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground mb-2">Cumulative Tax Savings</p>
+              <p className="text-3xl font-bold text-gold mb-1">$248,000</p>
+              <p className="text-xs text-muted-foreground">Net of transaction and realization costs</p>
+            </Card>
+            <Card className="p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground mb-2">Retirement Sustainability</p>
+              <p className="text-3xl font-bold text-green-700 mb-1">+4.2 years</p>
+              <p className="text-xs text-muted-foreground">of planned withdrawals funded</p>
+            </Card>
+            <Card className="p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground mb-2">Effective Tax Rate</p>
+              <p className="text-3xl font-bold text-navy mb-1">19.4% → 16.7%</p>
+              <p className="text-xs text-muted-foreground">Average effective rate reduction</p>
+            </Card>
+            <Card className="p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground mb-2">Risk Profile</p>
+              <p className="text-3xl font-bold text-navy mb-1">60/40</p>
+              <p className="text-xs text-muted-foreground">Maintains target allocation; no increase in modeled drawdown</p>
+            </Card>
+                </div>
+
+          {/* Row 3: Sources of Value */}
+          <Card className="p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-navy mb-4">Sources of Value</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Chart */}
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={[
+                      { source: "Roth Conversions", value: 110 },
+                      { source: "Asset Location", value: 82 },
+                      { source: "Tax-Loss Harvesting", value: 36 },
+                      { source: "Charitable/QCD", value: 20 },
+                    ]}
+                    layout="vertical"
+                    margin={{ top: 10, right: 30, left: 80, bottom: 10 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis type="number" stroke="#6b7280" style={{ fontSize: '11px' }} tickFormatter={(value) => `$${value}k`} />
+                    <YAxis dataKey="source" type="category" stroke="#6b7280" style={{ fontSize: '11px' }} width={70} />
+                    <RechartsTooltip
+                      formatter={(value: number) => [`$${value}k`, 'Savings']}
+                      contentStyle={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '6px',
+                      }}
+                    />
+                    <Bar dataKey="value" fill="#d4af37" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              
+              {/* Explanations */}
+              <div className="space-y-3">
+              <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Roth Conversions – $110k</p>
+                  <p className="text-xs text-muted-foreground">Strategic conversions during low-tax years to maximize tax-free growth and reduce future RMDs.</p>
+                    </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Asset Location Optimization – $82k</p>
+                  <p className="text-xs text-muted-foreground">Placing tax-inefficient assets in tax-advantaged accounts to minimize annual tax drag.</p>
+                  </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Tax-Loss Harvesting – $36k</p>
+                  <p className="text-xs text-muted-foreground">Systematic realization of losses to offset gains and reduce current-year tax liability.</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Charitable/QCD Strategies – $20k</p>
+                  <p className="text-xs text-muted-foreground">Using qualified charitable distributions and appreciated asset gifting to maximize deduction value.</p>
+              </div>
+            </div>
+            </div>
+          </Card>
+
+          {/* Row 4: Client Summary Narrative */}
+          <Card className="p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-navy mb-4">Client Summary</h3>
+            <div className="space-y-4">
+              <p className="text-sm text-foreground leading-relaxed">
+                By reorganizing where you hold certain investments, converting part of your IRA to Roth during low-tax years, 
+                and realizing losses strategically in down markets, we project a reduction in lifetime taxes of about $248,000 
+                while keeping your risk level unchanged. This strategy extends your retirement sustainability by over 4 years 
+                and reduces your effective tax rate from 19.4% to 16.7% on average. The approach maintains your target 60/40 
+                asset allocation and does not increase your modeled portfolio drawdown risk.
+              </p>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  className="bg-white"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "By reorganizing where you hold certain investments, converting part of your IRA to Roth during low-tax years, and realizing losses strategically in down markets, we project a reduction in lifetime taxes of about $248,000 while keeping your risk level unchanged."
+                    );
+                  }}
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  Copy Summary
+                </Button>
+                <Button
+                  className="bg-gold hover:bg-gold-dark text-navy"
+                  onClick={() => console.log("Download PDF Report")}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Download PDF Report
+                </Button>
+            </div>
+            </div>
+          </Card>
+
+          {/* Row 5: Implementation Checklist */}
+          <Card className="p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-navy mb-4">Implementation Checklist</h3>
+            <div className="space-y-3">
+              {opportunities.map((opp) => {
+                const item = checklistItems[opp.id] || { included: true, status: "planned" };
+                return (
+                  <div key={opp.id} className="flex items-center gap-4 p-3 rounded-lg border border-grayNeutral">
+                    <Checkbox
+                      checked={item.included}
+                      onCheckedChange={(checked) => {
+                        setChecklistItems(prev => ({
+                          ...prev,
+                          [opp.id]: { ...prev[opp.id], included: checked as boolean }
+                        }));
+                      }}
+                    />
+                    <div className="flex-1">
+                      <Label className="text-sm font-medium cursor-pointer">{opp.title}</Label>
+                    </div>
+                    <Select 
+                      value={item.status} 
+                      onValueChange={(value) => {
+                        setChecklistItems(prev => ({
+                          ...prev,
+                          [opp.id]: { ...prev[opp.id], status: value }
+                        }));
+                      }}
+                    >
+                      <SelectTrigger className="w-32 bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="planned">Planned</SelectItem>
+                        <SelectItem value="in-progress">In Progress</SelectItem>
+                        <SelectItem value="implemented">Implemented</SelectItem>
+                        <SelectItem value="dismissed">Dismissed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                );
+              })}
             </div>
           </Card>
         </TabsContent>
