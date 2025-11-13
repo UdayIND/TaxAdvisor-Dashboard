@@ -26,7 +26,7 @@ export const Logo = ({ className = "", showText = true, onClick }: LogoProps) =>
       <img
         src="/logo.png"
         alt="riAI Capital Logo"
-        className="h-8 w-auto flex-shrink-0"
+        className="h-[41.6px] w-auto flex-shrink-0"
       />
 
       {/* Text */}
